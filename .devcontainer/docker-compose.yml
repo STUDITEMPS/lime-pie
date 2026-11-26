@@ -1,17 +1,19 @@
-version: '3.8'
 services:
-  # Update this to the name of the service you want to work with in your docker-compose.yml file
   devcontainer:
-    image: ghcr.io/studitemps/snake-devcontainer-base:1661360254
+    image: ghcr.io/studitemps/devcontainer-base:date-2026-11-16
 
     env_file:
       - .devcontainer/devcontainer.env
 
     volumes:
-      # Update this to wherever you want VS Code to mount the folder of your project
-      - .:/workspace:cached
-      # Uncomment the next line to use Docker from inside the container. See https://aka.ms/vscode-remote/samples/docker-from-docker-compose for details.
-      # - /var/run/docker.sock:/var/run/docker.sock 
+      - ..:/workspaces:cached
+      - /var/run/docker.sock:/var/run/docker.sock
+      - commandhistory:/commandhistory
 
-      # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: 1
+      net.ipv6.conf.default.disable_ipv6: 1
+
+volumes:
+  commandhistory:
