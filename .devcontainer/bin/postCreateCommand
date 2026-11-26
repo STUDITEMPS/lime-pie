@@ -1,0 +1,17 @@
+#!/bin/bash -ieu
+
+# install the tool versions from .tool-versions (Ruby is compiled, the others are in the base image)
+asdf install
+
+# install rebar and hex, present in base image
+install-mix-tooling
+
+cd elixir
+mix deps.get
+mix compile
+MIX_ENV=test mix compile
+cd -
+
+cd ruby
+gem install bundler:2.3.10
+bin/setup
